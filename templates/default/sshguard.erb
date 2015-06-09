@@ -1,0 +1,8 @@
+##
+# This file contains the rules that will be implemented by the iptables recipe
+
+# for regular IPv4 support:
+-N sshguard
+# block any traffic from abusers
+-A INPUT -j sshguard
+
