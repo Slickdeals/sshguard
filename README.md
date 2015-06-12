@@ -2,21 +2,21 @@
 
 sshguard Cookbook
 ================
-Installs sshguard and configured host blocking with iptables ONLY
+Installs sshguard and configures host blocking with iptables
 
 
 Requirements
 ------------
 ### Platforms
-- Ubuntu (10.04+) You will need to use other means to ensure that ufw is activated.
-- CentOS (6+) 
+- Ubuntu (10.04+) __You will need to use other means to ensure that ufw is activated.__
+- CentOS (6+)
 
 
 Attributes
 ----------
 - `node['sshguard']['install_method']` - determines which method is used to install sshguard, must be 'source' or 'package'. defaults to 'package'
 - `node['sshguard']['whitelist_ips']` - an array of ip addresses that will be excluded from blocking
-- `node['sshguard']['initfirewall']` - set to true if you would like the init script to add the firewall rules (default false).
+- `node['sshguard']['use_iptables_cookbook']` - set to false if you do not want this to call the iptables cookbook to initalize iptables. When false the upstream init script is used to inject the rules directly into iptables (default: true)
 - `node['sshguard']['safety_thresh']` - Block an attacker after it incurred a total dangerousness exceeding sAfety_thresh. (Default: 40)
 - `node['sshguard']['block_duration']` - Release blocked addr no sooner than secs after blocked first time. sshguard will release between X and 3/2 * X seconds after blocking it.  (Default: 7*60)
 - `node['sshguard']['attack_interim']` - Forget about an address after secs seconds. If host A issues one attack every this many seconds, it will never be blocked.  (Default: 20*60)
@@ -35,7 +35,11 @@ Attributes
 Recipes
 -------
 ### default
-Installs and configures SSHGuard. Uses the iptables cookbook to configure a new chain for sshguard to drop traffic from offenders.
+Installs and configures SSHGuard.
+
+If the `node['iptables']['use_iptables_cookbook']` attribute is set to true (default behavior) it will use the iptables cookbook to configure a new chain for sshguard to drop traffic from offenders
+
+If it is set to false then the cookbook will enable the upstream package's method which calls the rule add commands in sshguard's init script. In this case you will need to enable iptables and ensure it is working elsewhere
 
 ### install_package
 Installs sshguard through the package manager. Used by the `default` recipe.
@@ -46,12 +50,14 @@ Installs sshguard from source. Used by the `default` recipe.
 
 Usage
 -----
-Define attributes and use the default recipe.
+Set any attrpibutes needed and call `recipe[sshguard:default]` in your runlist or from your wrapper
 
 
 ## License & Authors
 - Authors:
- - Jonathan Temple <bofh@slickdeals.net>
+    - Jonathan Temple <bofh@slickdeals.net>
+    - David Aronsohn <hipster@slickdeals.net>
+
 
 ```text
 Copyright (c) 2015 Slickdeals, LLC

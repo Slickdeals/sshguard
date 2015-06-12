@@ -4,7 +4,7 @@ maintainer_email 'bofh@slickdeals.net'
 license          'BSD'
 description      'Installs/Configures sshguard'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.6'
+version          '1.0.0'
 
 recipe "sshguard", "Installs and configures sshguard"
 

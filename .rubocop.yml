@@ -1,0 +1,29 @@
+AllCops:
+  Exclude:
+    - 'Guardfile'
+    - 'vendor/**'
+
+AlignParameters:
+  Enabled: false
+
+# variable({
+BracesAroundHashParameters:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+# Allows for alignment of parameters
+SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+# Ruby 1.9 hashes ( key: 'value' instead of :key => 'value )
+Style/HashSyntax:
+  Enabled: false
+
+# Using " when you could use '
+Style/StringLiterals:
+  Enabled: false
