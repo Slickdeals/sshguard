@@ -1,4 +1,4 @@
-require 'serverspec'
+require 'spec_helper'
 
 describe service('sshguard') do
   it { should be_running }

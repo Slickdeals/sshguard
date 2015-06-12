@@ -19,12 +19,12 @@ template '/etc/default/sshguard' do
   group 'root'
   mode '0644'
   variables({
-              :logfile  => node[:sshguard][:logfiles],
-              :fw => node[:sshguard][:initfirewall],
-              :a => node[:sshguard][:safety_thresh],
-              :p => node[:sshguard][:block_duration],
-              :s => node[:sshguard][:attack_interim],
-              :b => node[:sshguard][:blacklist]
+              :logfile  => node['sshguard']['logfiles'],
+              :fw => node['sshguard']['use_iptables_cookbook'],
+              :a => node['sshguard']['safety_thresh'],
+              :p => node['sshguard']['block_duration'],
+              :s => node['sshguard']['attack_interim'],
+              :b => node['sshguard']['blacklist']
             })
   notifies :restart, "service[sshguard]"
 end
@@ -35,13 +35,13 @@ template "/etc/sshguard/whitelist" do
   group "root"
   mode '0644'
   variables({
-              :whitelist  => node[:sshguard][:whitelistips]
+              :whitelist  => node['sshguard']['whitelistips']
             })
   notifies :restart, "service[sshguard]"
 end
 
 cookbook_file '/etc/init.d/sshguard' do
-  source "sshguardinit.erb"
+  source "sshguardinit.sh"
   action :create
   owner 'root'
   group 'root'
@@ -54,7 +54,7 @@ service "sshguard" do
   action [:enable, :start]
 end
 
-if node[:sshguard][:initfirewall] == false
+if node['sshguard']['use_iptables_cookbook']
   # Sets up iptables
   include_recipe 'iptables'
   # Creates the iptables rules for sshguard

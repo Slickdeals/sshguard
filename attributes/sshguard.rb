@@ -5,7 +5,7 @@
 # Copyright (c) 2014 Slickdeals.net, All Rights Reserved.
 #
 
-case node["platform_family"]
+case node['platform_family']
 when 'debian'
   default['sshguard']['install_method'] = 'package'
   default['sshguard']['logfiles'] = ["/var/log/auth.log"]
@@ -22,7 +22,7 @@ default['sshguard']['source']['target_os'] = 'generic'
 default['sshguard']['package']['version'] = nil
 
 default['sshguard']['whitelistips'] = [nil]
-default['sshguard']['initfirewall'] = false
+default['sshguard']['use_iptables_cookbook'] = true
 default['sshguard']['safety_thresh'] = '40'
 default['sshguard']['block_duration'] = '420'
 default['sshguard']['attack_interim'] = '1200'
